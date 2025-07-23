@@ -1,8 +1,15 @@
-# Reddit Gaming & Technology Aggregator
+# PixelCircuit - Gaming & Technology Hub
 
 ## Overview
 
-This is a Flask-based web application that aggregates posts from Reddit's gaming and technology communities. The app fetches posts from specific subreddits using Reddit's JSON API and displays them in a user-friendly interface with Bootstrap styling and dark theme support.
+This is a Flask-based web application called PixelCircuit that will aggregate gaming and technology content. The app is designed to fetch posts from external APIs and display them in a user-friendly interface with Bootstrap styling and dark theme support. Currently waiting for API configuration to enable content fetching.
+
+## Recent Changes (July 2025)
+
+- **Rebranding Complete**: Changed from "Reddit Aggregator" to "PixelCircuit"
+- **API Preparation**: Updated ContentFetcher class to be ready for external API integration
+- **UI Updates**: Removed all platform-specific references, updated branding throughout
+- **Ready for Integration**: Framework prepared for API configuration when provided
 
 ## User Preferences
 
@@ -25,16 +32,16 @@ Preferred communication style: Simple, everyday language.
 - **Error Handling**: Try-catch blocks with user-friendly flash messages
 
 ### API Integration
-- **Reddit API**: Uses Reddit's public JSON endpoints (no authentication required)
-- **Endpoint Pattern**: `https://www.reddit.com/r/{subreddit}.json`
-- **Rate Limiting**: Built-in timeout (10 seconds) and proper User-Agent headers
-- **Data Processing**: Extracts relevant post information from Reddit's JSON response
+- **Content API**: Placeholder for external content API (to be configured)
+- **Endpoint Pattern**: `https://api.pixelcircuit.com/v1/{category}` (pending configuration)
+- **Rate Limiting**: Built-in timeout (10 seconds) and proper headers
+- **Data Processing**: Ready to extract relevant post information from API response
 
 ## Key Components
 
-### 1. RedditFetcher Class
-- **Purpose**: Handles all Reddit API interactions
-- **Methods**: `fetch_posts()` for retrieving subreddit content
+### 1. ContentFetcher Class
+- **Purpose**: Handles all content API interactions
+- **Methods**: `fetch_posts()` for retrieving category content
 - **Configuration**: Timeout settings, headers, and base URL management
 - **Error Handling**: Graceful degradation on API failures
 
@@ -53,16 +60,16 @@ Preferred communication style: Simple, everyday language.
 ## Data Flow
 
 1. **Request Initiation**: User visits the homepage
-2. **Data Fetching**: RedditFetcher queries multiple subreddits
-3. **Data Processing**: Raw Reddit JSON is parsed and cleaned
+2. **Data Fetching**: ContentFetcher queries multiple content categories
+3. **Data Processing**: Raw API JSON will be parsed and cleaned
 4. **Template Rendering**: Processed data is passed to Jinja2 templates
 5. **Response Delivery**: HTML page with aggregated posts is served
 
 ### Post Data Structure
-Each post contains:
+Each post will contain:
 - Title and URL
-- Author and subreddit information
-- Score (upvotes/downvotes)
+- Author and category information
+- Score (engagement metrics)
 - Creation timestamp
 - Number of comments
 - Post type indicators
@@ -79,10 +86,10 @@ Each post contains:
 - **Font Awesome 6**: Icon library
 - **CDN Delivery**: All frontend assets loaded from CDNs
 
-### Reddit API
-- **Public Endpoints**: No authentication required
+### Content API
+- **Authentication**: To be configured when API details are provided
 - **Rate Limiting**: Respectful API usage with proper headers
-- **JSON Format**: Standard Reddit API response structure
+- **JSON Format**: API response structure to be documented
 
 ## Deployment Strategy
 

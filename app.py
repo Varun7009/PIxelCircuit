@@ -11,106 +11,77 @@ logging.basicConfig(level=logging.DEBUG)
 app = Flask(__name__)
 app.secret_key = os.environ.get("SESSION_SECRET", "dev-secret-key-change-in-production")
 
-class RedditFetcher:
-    """Class to handle Reddit API interactions"""
+class ContentFetcher:
+    """Class to handle content API interactions"""
     
     def __init__(self):
-        self.base_url = "https://www.reddit.com/r/{subreddit}.json"
+        self.base_url = "https://api.pixelcircuit.com/v1/{category}"  # Placeholder for future API
         self.headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+            'User-Agent': 'PixelCircuit Content Aggregator 1.0',
             'Accept': 'application/json, text/plain, */*',
             'Accept-Language': 'en-US,en;q=0.9',
-            'Accept-Encoding': 'gzip, deflate, br',
-            'DNT': '1',
-            'Connection': 'keep-alive',
-            'Upgrade-Insecure-Requests': '1'
+            'Content-Type': 'application/json'
         }
         self.timeout = 10
     
-    def fetch_posts(self, subreddit, limit=10):
+    def fetch_posts(self, category, limit=10):
         """
-        Fetch posts from a specific subreddit
+        Fetch posts from a specific category (gaming or technology)
         
         Args:
-            subreddit (str): Name of the subreddit
+            category (str): Content category ('gaming' or 'technology')
             limit (int): Number of posts to fetch (default: 10)
             
         Returns:
             list: List of post dictionaries or empty list on error
         """
-        try:
-            url = self.base_url.format(subreddit=subreddit)
-            params = {'limit': limit}
-            
-            app.logger.info(f"Fetching posts from r/{subreddit}")
-            response = requests.get(url, headers=self.headers, params=params, timeout=self.timeout)
-            response.raise_for_status()
-            
-            data = response.json()
-            posts = []
-            
-            for post_data in data['data']['children']:
-                post = post_data['data']
-                
-                # Extract relevant post information
-                post_info = {
-                    'title': post.get('title', 'No Title'),
-                    'url': f"https://www.reddit.com{post.get('permalink', '')}",
-                    'score': post.get('score', 0),
-                    'num_comments': post.get('num_comments', 0),
-                    'author': post.get('author', 'Unknown'),
-                    'created_utc': post.get('created_utc', 0),
-                    'subreddit': subreddit,
-                    'external_url': post.get('url', ''),
-                    'is_self': post.get('is_self', False)
-                }
-                
-                # Format creation time
-                if post_info['created_utc']:
-                    post_info['created_time'] = datetime.fromtimestamp(post_info['created_utc']).strftime('%Y-%m-%d %H:%M')
-                else:
-                    post_info['created_time'] = 'Unknown'
-                
-                posts.append(post_info)
-            
-            app.logger.info(f"Successfully fetched {len(posts)} posts from r/{subreddit}")
-            return posts
-            
-        except requests.exceptions.Timeout:
-            app.logger.error(f"Timeout error fetching posts from r/{subreddit}")
-            return []
-        except requests.exceptions.RequestException as e:
-            app.logger.error(f"Request error fetching posts from r/{subreddit}: {str(e)}")
-            return []
-        except KeyError as e:
-            app.logger.error(f"Data parsing error for r/{subreddit}: {str(e)}")
-            return []
-        except Exception as e:
-            app.logger.error(f"Unexpected error fetching posts from r/{subreddit}: {str(e)}")
-            return []
+        # Placeholder method - will be implemented when API is provided
+        app.logger.info(f"API not configured yet for {category} content")
+        return []
+        
+        # Future implementation when API is available:
+        # try:
+        #     url = self.base_url.format(category=category)
+        #     params = {'limit': limit}
+        #     
+        #     app.logger.info(f"Fetching {category} posts")
+        #     response = requests.get(url, headers=self.headers, params=params, timeout=self.timeout)
+        #     response.raise_for_status()
+        #     
+        #     data = response.json()
+        #     posts = []
+        #     
+        #     # Process API response data here
+        #     # Expected format will be provided with API documentation
+        #     
+        #     return posts
+        #     
+        # except Exception as e:
+        #     app.logger.error(f"Error fetching {category} posts: {str(e)}")
+        #     return []
 
-# Initialize Reddit fetcher
-reddit_fetcher = RedditFetcher()
+# Initialize content fetcher
+content_fetcher = ContentFetcher()
 
 @app.route('/')
 def index():
     """
-    Main route that displays aggregated posts from gaming and technology subreddits
+    Main route that displays aggregated posts from gaming and technology categories
     """
     try:
-        # Fetch posts from both subreddits
-        gaming_posts = reddit_fetcher.fetch_posts('gaming', limit=10)
-        technology_posts = reddit_fetcher.fetch_posts('technology', limit=10)
+        # Use content fetcher when API is configured
+        gaming_posts = content_fetcher.fetch_posts('gaming', limit=10)
+        technology_posts = content_fetcher.fetch_posts('technology', limit=10)
         
         # Check if we got any posts
         total_posts = len(gaming_posts) + len(technology_posts)
         
         if total_posts == 0:
-            flash('Unable to fetch posts from Reddit at this time. Please try again later.', 'warning')
+            flash('Content API is not configured yet. Waiting for API setup.', 'info')
         elif len(gaming_posts) == 0:
-            flash('Unable to fetch posts from r/gaming. Technology posts are still available.', 'info')
+            flash('Gaming content API is not configured yet. Technology posts will be available soon.', 'info')
         elif len(technology_posts) == 0:
-            flash('Unable to fetch posts from r/technology. Gaming posts are still available.', 'info')
+            flash('Technology content API is not configured yet. Gaming posts will be available soon.', 'info')
         
         # Prepare data for template
         template_data = {

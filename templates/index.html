@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reddit Gaming & Technology Aggregator</title>
+    <title>PixelCircuit - Gaming & Technology Hub</title>
     
     <!-- Bootstrap CSS with Replit Dark Theme -->
     <link href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css" rel="stylesheet">
@@ -15,13 +15,13 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     
     <!-- AdSense Ready Meta Tags -->
-    <meta name="description" content="Latest posts from Reddit's gaming and technology communities aggregated in one place">
-    <meta name="keywords" content="reddit, gaming, technology, news, aggregator">
+    <meta name="description" content="Latest gaming and technology content aggregated in one place at PixelCircuit">
+    <meta name="keywords" content="pixelcircuit, gaming, technology, news, aggregator, content">
     <meta name="robots" content="index, follow">
     
     <!-- Open Graph tags for social sharing -->
-    <meta property="og:title" content="Reddit Gaming & Technology Aggregator">
-    <meta property="og:description" content="Latest posts from Reddit's gaming and technology communities">
+    <meta property="og:title" content="PixelCircuit - Gaming & Technology Hub">
+    <meta property="og:description" content="Latest gaming and technology content at PixelCircuit">
     <meta property="og:type" content="website">
 </head>
 <body>
@@ -29,8 +29,8 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
         <div class="container">
             <a class="navbar-brand" href="/">
-                <i class="fab fa-reddit-alien me-2"></i>
-                Reddit Aggregator
+                <i class="fas fa-microchip me-2"></i>
+                PixelCircuit
             </a>
             <div class="navbar-nav ms-auto">
                 <span class="navbar-text">
@@ -74,7 +74,7 @@
                             <i class="fas fa-gamepad me-2"></i>
                             Gaming Posts
                         </h3>
-                        <small class="text-light">r/gaming</small>
+                        <small class="text-light">Gaming Content</small>
                     </div>
                     <div class="card-body">
                         {% if gaming_posts %}
@@ -112,7 +112,7 @@
                             <div class="text-center py-4">
                                 <i class="fas fa-exclamation-circle fa-3x text-muted mb-3"></i>
                                 <h5 class="text-muted">No Gaming Posts Available</h5>
-                                <p class="text-muted">Unable to fetch posts from r/gaming at this time.</p>
+                                <p class="text-muted">API connection will be configured soon.</p>
                             </div>
                         {% endif %}
                     </div>
@@ -127,7 +127,7 @@
                             <i class="fas fa-microchip me-2"></i>
                             Technology Posts
                         </h3>
-                        <small class="text-light">r/technology</small>
+                        <small class="text-light">Technology Content</small>
                     </div>
                     <div class="card-body">
                         {% if technology_posts %}
@@ -165,7 +165,7 @@
                             <div class="text-center py-4">
                                 <i class="fas fa-exclamation-circle fa-3x text-muted mb-3"></i>
                                 <h5 class="text-muted">No Technology Posts Available</h5>
-                                <p class="text-muted">Unable to fetch posts from r/technology at this time.</p>
+                                <p class="text-muted">API connection will be configured soon.</p>
                             </div>
                         {% endif %}
                     </div>
@@ -238,11 +238,11 @@
     <footer class="bg-dark text-center py-3 mt-5">
         <div class="container">
             <p class="text-muted mb-0">
-                <i class="fab fa-reddit-alien me-1"></i>
-                Reddit Gaming & Technology Aggregator - Powered by Flask
+                <i class="fas fa-microchip me-1"></i>
+                PixelCircuit - Gaming & Technology Hub - Powered by Flask
             </p>
             <small class="text-muted">
-                Data sourced from Reddit's public API
+                Content aggregation platform
             </small>
         </div>
     </footer>
