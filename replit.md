@@ -11,8 +11,9 @@ This is a Flask-based web application called PixelCircuit that aggregates gaming
 - **API Key Configured**: Added News API key (e15e960b764a4f11ab348cf559ae11b9)
 - **Content Categories**: Gaming and technology news now fetching from authentic sources
 - **Firebase Analytics**: Integrated Firebase Analytics for user tracking and insights
+- **Image Integration**: Added automatic blog images from News API with fallback placeholders
 - **UI Updates**: Removed platform-specific references, updated branding throughout
-- **Real Data**: Website now displays actual gaming and technology news articles
+- **Real Data**: Website now displays actual gaming and technology news articles with images
 
 ## User Preferences
 
@@ -79,13 +80,13 @@ Preferred communication style: Simple, everyday language.
 5. **Response Delivery**: HTML page with aggregated posts is served
 
 ### Post Data Structure
-Each post will contain:
+Each post contains:
 - Title and URL
 - Author and category information
-- Score (engagement metrics)
+- Article description (truncated for display)
 - Creation timestamp
-- Number of comments
-- Post type indicators
+- Thumbnail image from News API
+- Fallback placeholder for missing images
 
 ## External Dependencies
 
