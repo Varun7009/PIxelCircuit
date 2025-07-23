@@ -14,6 +14,9 @@ This is a Flask-based web application called PixelCircuit that aggregates gaming
 - **Content Scraping**: Integrated trafilatura for full article content extraction
 - **Responsive Layout**: Optimized for all device sizes with mobile-first design
 - **Premium UI Effects**: Backdrop filters, gradient overlays, and shimmer effects
+- **Content Filtering**: Added automatic filtering of sensitive topics for ad network approval
+- **Alternative Ad Networks**: Prepared structure for Media.net, PropellerAds, Amazon Associates
+- **Improved Content Formatting**: Enhanced link conversion, paragraph structure, and typography
 
 ## User Preferences
 

@@ -36,11 +36,17 @@ class ContentFetcher:
             list: List of post dictionaries or empty list on error
         """
         try:
-            # Define search queries for each category
+            # Define search queries for each category (ad-friendly content)
             queries = {
-                'gaming': 'gaming OR "video games" OR esports OR PlayStation OR Xbox OR Nintendo OR Steam',
-                'technology': 'technology OR tech OR software OR AI OR "artificial intelligence" OR startup OR programming'
+                'gaming': 'gaming OR "video games" OR esports OR PlayStation OR Xbox OR Nintendo OR Steam OR "game review" OR indie',
+                'technology': 'technology OR tech OR software OR AI OR "artificial intelligence" OR startup OR programming OR gadgets OR mobile'
             }
+            
+            # Content filtering to avoid sensitive topics for ad approval
+            excluded_keywords = [
+                'war', 'ukraine', 'russia', 'conflict', 'military', 'weapon', 'violence',
+                'political', 'election', 'controversy', 'scandal', 'death', 'disaster'
+            ]
             
             if category not in queries:
                 app.logger.error(f"Unknown category: {category}")
@@ -70,6 +76,19 @@ class ContentFetcher:
             for article in articles:
                 # Skip articles with removed content
                 if article.get('title') == '[Removed]' or not article.get('title'):
+                    continue
+                
+                # Filter out sensitive content for ad approval
+                title_lower = article.get('title', '').lower()
+                description_lower = article.get('description', '').lower()
+                
+                should_skip = False
+                for keyword in excluded_keywords:
+                    if keyword in title_lower or keyword in description_lower:
+                        should_skip = True
+                        break
+                
+                if should_skip:
                     continue
                     
                 post_info = {
