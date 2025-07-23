@@ -36,10 +36,10 @@ class ContentFetcher:
             list: List of post dictionaries or empty list on error
         """
         try:
-            # Define search queries for each category (ad-friendly content)
+            # Define search queries for each category (more specific to avoid overlap)
             queries = {
-                'gaming': 'gaming OR "video games" OR esports OR PlayStation OR Xbox OR Nintendo OR Steam OR "game review" OR indie',
-                'technology': 'technology OR tech OR software OR AI OR "artificial intelligence" OR startup OR programming OR gadgets OR mobile'
+                'gaming': '("video games" OR esports OR PlayStation OR Xbox OR Nintendo OR Steam OR "game review" OR "gaming news") -technology -tech -software -programming',
+                'technology': '(technology OR "tech news" OR software OR "artificial intelligence" OR startup OR programming OR gadgets OR smartphone) -gaming -games -PlayStation -Xbox'
             }
             
             # Content filtering to avoid sensitive topics for ad approval
@@ -78,18 +78,43 @@ class ContentFetcher:
                 if article.get('title') == '[Removed]' or not article.get('title'):
                     continue
                 
-                # Filter out sensitive content for ad approval
+                # Filter out sensitive content and ensure category relevance
                 title_lower = article.get('title', '').lower()
                 description_lower = article.get('description', '').lower()
+                content_text = (title_lower + ' ' + description_lower).strip()
                 
+                # Skip sensitive content for ad approval
                 should_skip = False
                 for keyword in excluded_keywords:
-                    if keyword in title_lower or keyword in description_lower:
+                    if keyword in content_text:
                         should_skip = True
                         break
                 
                 if should_skip:
                     continue
+                
+                # Category-specific filtering to avoid cross-contamination
+                if category == 'gaming':
+                    # Must contain gaming-related terms
+                    gaming_terms = ['game', 'gaming', 'player', 'esports', 'nintendo', 'playstation', 'xbox', 'steam', 'console']
+                    tech_terms = ['software', 'programming', 'developer', 'coding', 'app development', 'web development']
+                    
+                    has_gaming = any(term in content_text for term in gaming_terms)
+                    has_tech_only = any(term in content_text for term in tech_terms) and not has_gaming
+                    
+                    if not has_gaming or has_tech_only:
+                        continue
+                        
+                elif category == 'technology':
+                    # Must contain tech-related terms but not gaming
+                    tech_terms = ['technology', 'tech', 'software', 'ai', 'artificial intelligence', 'startup', 'programming', 'gadget', 'smartphone', 'computer']
+                    gaming_terms = ['game', 'gaming', 'player', 'esports', 'nintendo', 'playstation', 'xbox']
+                    
+                    has_tech = any(term in content_text for term in tech_terms)
+                    has_gaming = any(term in content_text for term in gaming_terms)
+                    
+                    if not has_tech or has_gaming:
+                        continue
                     
                 post_info = {
                     'title': article.get('title', 'No Title'),
@@ -225,6 +250,40 @@ class ContentFetcher:
 # Initialize content fetcher
 content_fetcher = ContentFetcher()
 
+def remove_duplicate_posts(posts):
+    """Remove duplicate posts based on title similarity and URL"""
+    import difflib
+    
+    unique_posts = []
+    seen_titles = set()
+    seen_urls = set()
+    
+    for post in posts:
+        title = post.get('title', '').lower().strip()
+        url = post.get('url', '').strip()
+        
+        if not title or not url:
+            continue
+            
+        # Skip if exact URL already seen
+        if url in seen_urls:
+            continue
+            
+        # Check if this title is too similar to any existing title
+        is_duplicate = False
+        for seen_title in seen_titles:
+            similarity = difflib.SequenceMatcher(None, title, seen_title).ratio()
+            if similarity > 0.85:  # 85% similarity threshold
+                is_duplicate = True
+                break
+        
+        if not is_duplicate:
+            unique_posts.append(post)
+            seen_titles.add(title)
+            seen_urls.add(url)
+    
+    return unique_posts
+
 @app.route('/')
 def index():
     """
@@ -232,8 +291,22 @@ def index():
     """
     try:
         # Use content fetcher when API is configured
-        gaming_posts = content_fetcher.fetch_posts('gaming', limit=10)
-        technology_posts = content_fetcher.fetch_posts('technology', limit=10)
+        gaming_posts = content_fetcher.fetch_posts('gaming', limit=15)  # Get more to account for filtering
+        technology_posts = content_fetcher.fetch_posts('technology', limit=15)
+        
+        # Remove duplicates within and between categories
+        gaming_posts = remove_duplicate_posts(gaming_posts)[:10]  # Keep top 10 after deduplication
+        technology_posts = remove_duplicate_posts(technology_posts)[:10]
+        
+        # Final cross-category duplicate check
+        all_unique_posts = remove_duplicate_posts(gaming_posts + technology_posts)
+        
+        # Separate back into categories maintaining uniqueness
+        final_gaming = [p for p in all_unique_posts if p.get('subreddit') == 'gaming'][:10]
+        final_tech = [p for p in all_unique_posts if p.get('subreddit') == 'technology'][:10]
+        
+        gaming_posts = final_gaming
+        technology_posts = final_tech
         
         # Check if we got any posts
         total_posts = len(gaming_posts) + len(technology_posts)
