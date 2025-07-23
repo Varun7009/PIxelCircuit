@@ -497,6 +497,107 @@ html {
     margin: 2rem auto;
 }
 
+/* Enhanced article content styling */
+.article-paragraph {
+    margin-bottom: 1.8rem;
+    line-height: 1.9;
+    font-size: 1.1rem;
+    text-align: justify;
+    color: rgba(255, 255, 255, 0.9);
+    transition: all 0.3s ease;
+}
+
+.article-paragraph:hover {
+    color: rgba(255, 255, 255, 0.95);
+    transform: translateX(3px);
+}
+
+.article-link {
+    color: var(--bs-primary);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.article-link:hover {
+    color: var(--bs-info);
+    border-bottom-color: var(--bs-info);
+    text-shadow: 0 0 8px rgba(13, 110, 253, 0.3);
+    transform: translateY(-1px);
+}
+
+.article-quote {
+    background: rgba(13, 110, 253, 0.1);
+    border-left: 4px solid var(--bs-primary);
+    padding: 1.5rem;
+    margin: 2rem 0;
+    border-radius: 8px;
+    font-style: italic;
+    backdrop-filter: blur(10px);
+    position: relative;
+}
+
+.article-quote::before {
+    content: '"';
+    font-size: 4rem;
+    color: var(--bs-primary);
+    position: absolute;
+    top: -10px;
+    left: 15px;
+    opacity: 0.3;
+}
+
+.article-heading {
+    color: var(--bs-primary);
+    font-weight: 600;
+    margin: 2.5rem 0 1.5rem 0;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid rgba(13, 110, 253, 0.3);
+    position: relative;
+}
+
+.article-heading::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 50px;
+    height: 2px;
+    background: var(--bs-primary);
+    transition: width 0.3s ease;
+}
+
+.article-heading:hover::after {
+    width: 100px;
+}
+
+/* Better content structure */
+.content-text {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    line-height: 1.8;
+}
+
+.content-text p:first-child {
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.95);
+}
+
+/* Link hover animations */
+@keyframes linkGlow {
+    0%, 100% {
+        text-shadow: 0 0 5px rgba(13, 110, 253, 0.3);
+    }
+    50% {
+        text-shadow: 0 0 15px rgba(13, 110, 253, 0.6);
+    }
+}
+
+.article-link:hover {
+    animation: linkGlow 1.5s ease-in-out infinite;
+}
+
 /* Custom scrollbar for webkit browsers */
 ::-webkit-scrollbar {
     width: 8px;

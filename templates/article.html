@@ -131,15 +131,31 @@
                     <div class="article-content">
                         {% if content and content != "Content not available" %}
                             <div class="content-text">
-                                {% set content_parts = content.split('\n\n') %}
-                                {% set total_parts = content_parts|length %}
-                                
-                                <!-- First third of content -->
-                                {% for paragraph in content_parts[:total_parts//3] %}
-                                    {% if paragraph.strip() %}
-                                        <p class="content-paragraph">{{ paragraph|replace('\n', '<br>')|safe }}</p>
-                                    {% endif %}
-                                {% endfor %}
+                                {% if '<p class="article-paragraph">' in content %}
+                                    <!-- Content is already formatted -->
+                                    {% set content_parts = content.split('</p>') %}
+                                    {% set total_parts = content_parts|length %}
+                                    
+                                    <!-- First third of content -->
+                                    {% for paragraph in content_parts[:total_parts//3] %}
+                                        {% if paragraph.strip() %}
+                                            {{ paragraph|safe }}
+                                            {% if not paragraph.endswith('</p>') and not paragraph.endswith('>') %}
+                                                </p>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endfor %}
+                                {% else %}
+                                    <!-- Fallback for unformatted content -->
+                                    {% set content_parts = content.split('\n\n') %}
+                                    {% set total_parts = content_parts|length %}
+                                    
+                                    {% for paragraph in content_parts[:total_parts//3] %}
+                                        {% if paragraph.strip() %}
+                                            <p class="article-paragraph">{{ paragraph|replace('\n', '<br>')|safe }}</p>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
                                 
                                 <!-- Ad Box 2 - Middle -->
                                 <div class="ad-box-container my-5">
@@ -168,18 +184,42 @@
                                 </div>
                                 
                                 <!-- Second third of content -->
-                                {% for paragraph in content_parts[total_parts//3:2*total_parts//3] %}
-                                    {% if paragraph.strip() %}
-                                        <p class="content-paragraph">{{ paragraph|replace('\n', '<br>')|safe }}</p>
-                                    {% endif %}
-                                {% endfor %}
+                                {% if '<p class="article-paragraph">' in content %}
+                                    {% for paragraph in content_parts[total_parts//3:2*total_parts//3] %}
+                                        {% if paragraph.strip() %}
+                                            {{ paragraph|safe }}
+                                            {% if not paragraph.endswith('</p>') and not paragraph.endswith('>') %}
+                                                </p>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endfor %}
+                                {% else %}
+                                    {% set content_parts = content.split('\n\n') %}
+                                    {% for paragraph in content_parts[total_parts//3:2*total_parts//3] %}
+                                        {% if paragraph.strip() %}
+                                            <p class="article-paragraph">{{ paragraph|replace('\n', '<br>')|safe }}</p>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
                                 
                                 <!-- Final third of content -->
-                                {% for paragraph in content_parts[2*total_parts//3:] %}
-                                    {% if paragraph.strip() %}
-                                        <p class="content-paragraph">{{ paragraph|replace('\n', '<br>')|safe }}</p>
-                                    {% endif %}
-                                {% endfor %}
+                                {% if '<p class="article-paragraph">' in content %}
+                                    {% for paragraph in content_parts[2*total_parts//3:] %}
+                                        {% if paragraph.strip() %}
+                                            {{ paragraph|safe }}
+                                            {% if not paragraph.endswith('</p>') and not paragraph.endswith('>') %}
+                                                </p>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endfor %}
+                                {% else %}
+                                    {% set content_parts = content.split('\n\n') %}
+                                    {% for paragraph in content_parts[2*total_parts//3:] %}
+                                        {% if paragraph.strip() %}
+                                            <p class="article-paragraph">{{ paragraph|replace('\n', '<br>')|safe }}</p>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
                             </div>
                         {% else %}
                             <div class="text-center py-5 content-not-available">

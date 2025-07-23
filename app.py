@@ -117,13 +117,13 @@ class ContentFetcher:
     
     def scrape_article_content(self, url):
         """
-        Scrape full article content from URL using trafilatura
+        Scrape full article content from URL using trafilatura with enhanced formatting
         
         Args:
             url (str): Article URL to scrape
             
         Returns:
-            str: Full article content or empty string if failed
+            str: Full article content with improved formatting
         """
         try:
             app.logger.info(f"Scraping content from: {url}")
@@ -133,11 +133,21 @@ class ContentFetcher:
                 app.logger.warning(f"Failed to download content from: {url}")
                 return "Content not available"
                 
-            text = trafilatura.extract(downloaded, include_links=True, include_images=False)
+            # Extract with better formatting options
+            text = trafilatura.extract(
+                downloaded, 
+                include_links=True, 
+                include_images=False,
+                include_formatting=True,
+                favor_precision=True,
+                output_format='xml'
+            )
             
             if text:
-                app.logger.info(f"Successfully scraped {len(text)} characters from: {url}")
-                return text
+                # Convert to HTML-friendly format
+                formatted_content = self.format_article_content(text)
+                app.logger.info(f"Successfully scraped and formatted {len(formatted_content)} characters from: {url}")
+                return formatted_content
             else:
                 app.logger.warning(f"No text extracted from: {url}")
                 return "Content not available"
@@ -145,6 +155,53 @@ class ContentFetcher:
         except Exception as e:
             app.logger.error(f"Error scraping content from {url}: {str(e)}")
             return "Content not available"
+    
+    def format_article_content(self, raw_content):
+        """
+        Format and structure article content for better readability
+        
+        Args:
+            raw_content (str): Raw extracted content
+            
+        Returns:
+            str: Formatted HTML content
+        """
+        import re
+        
+        if not raw_content or raw_content == "Content not available":
+            return raw_content
+        
+        # Clean up the content
+        content = raw_content.strip()
+        
+        # Convert markdown-style links to HTML links
+        content = re.sub(r'\[([^\]]+)\]\(([^)]+)\)', r'<a href="\2" target="_blank" rel="noopener noreferrer" class="article-link">\1</a>', content)
+        
+        # Split into paragraphs and clean up
+        paragraphs = content.split('\n\n')
+        formatted_paragraphs = []
+        
+        for para in paragraphs:
+            para = para.strip()
+            if para:
+                # Clean up extra whitespace
+                para = re.sub(r'\s+', ' ', para)
+                
+                # Format quotes
+                if para.startswith('"') and para.endswith('"'):
+                    para = f'<blockquote class="article-quote">{para}</blockquote>'
+                
+                # Format headings (if they look like headings)
+                elif len(para) < 100 and para.count('.') == 0 and para.isupper():
+                    para = f'<h4 class="article-heading">{para}</h4>'
+                
+                # Regular paragraphs
+                else:
+                    para = f'<p class="article-paragraph">{para}</p>'
+                
+                formatted_paragraphs.append(para)
+        
+        return '\n'.join(formatted_paragraphs)
 
 # Initialize content fetcher
 content_fetcher = ContentFetcher()
