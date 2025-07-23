@@ -450,6 +450,53 @@ html {
     }
 }
 
+/* AdSense styling improvements */
+.ad-fallback {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 120px;
+    padding: 1rem;
+}
+
+.adsbygoogle {
+    background: transparent !important;
+    min-height: 120px;
+}
+
+/* Ad box loading state */
+.ad-box .ad-content {
+    position: relative;
+    min-height: 120px;
+}
+
+.ad-box .ad-content:empty::after {
+    content: "Loading advertisement...";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--bs-secondary);
+    font-size: 0.9rem;
+}
+
+/* Loading spinner for ads */
+@keyframes adSpin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.ad-loading {
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid var(--bs-primary);
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    animation: adSpin 1s linear infinite;
+    margin: 2rem auto;
+}
+
 /* Custom scrollbar for webkit browsers */
 ::-webkit-scrollbar {
     width: 8px;
