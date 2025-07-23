@@ -2,14 +2,16 @@
 
 ## Overview
 
-This is a Flask-based web application called PixelCircuit that will aggregate gaming and technology content. The app is designed to fetch posts from external APIs and display them in a user-friendly interface with Bootstrap styling and dark theme support. Currently waiting for API configuration to enable content fetching.
+This is a Flask-based web application called PixelCircuit that aggregates gaming and technology content. The app fetches real news articles from News API and displays them in a user-friendly interface with Bootstrap styling and dark theme support. The site is fully functional with live content from authentic news sources.
 
 ## Recent Changes (July 2025)
 
 - **Rebranding Complete**: Changed from "Reddit Aggregator" to "PixelCircuit"
-- **API Preparation**: Updated ContentFetcher class to be ready for external API integration
-- **UI Updates**: Removed all platform-specific references, updated branding throughout
-- **Ready for Integration**: Framework prepared for API configuration when provided
+- **News API Integration**: Successfully integrated News API for real content fetching
+- **API Key Configured**: Added News API key (e15e960b764a4f11ab348cf559ae11b9)
+- **Content Categories**: Gaming and technology news now fetching from authentic sources
+- **UI Updates**: Removed platform-specific references, updated branding throughout
+- **Real Data**: Website now displays actual gaming and technology news articles
 
 ## User Preferences
 
@@ -32,10 +34,12 @@ Preferred communication style: Simple, everyday language.
 - **Error Handling**: Try-catch blocks with user-friendly flash messages
 
 ### API Integration
-- **Content API**: Placeholder for external content API (to be configured)
-- **Endpoint Pattern**: `https://api.pixelcircuit.com/v1/{category}` (pending configuration)
+- **News API**: Integrated NewsAPI.org for real content fetching
+- **Endpoint**: `https://newsapi.org/v2/everything`
+- **Authentication**: API key authentication (configured)
+- **Categories**: Gaming and technology content with targeted search queries
 - **Rate Limiting**: Built-in timeout (10 seconds) and proper headers
-- **Data Processing**: Ready to extract relevant post information from API response
+- **Data Processing**: Extracts title, URL, source, description, and timestamp from articles
 
 ## Key Components
 
@@ -86,10 +90,11 @@ Each post will contain:
 - **Font Awesome 6**: Icon library
 - **CDN Delivery**: All frontend assets loaded from CDNs
 
-### Content API
-- **Authentication**: To be configured when API details are provided
+### News API
+- **Authentication**: API key based authentication
 - **Rate Limiting**: Respectful API usage with proper headers
-- **JSON Format**: API response structure to be documented
+- **JSON Format**: Standard News API article format with source, title, description
+- **Search Queries**: Targeted queries for gaming and technology content
 
 ## Deployment Strategy
 

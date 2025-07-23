@@ -88,31 +88,26 @@
                                     </h5>
                                     <div class="post-meta small text-muted mb-2">
                                         <span class="me-3">
-                                            <i class="fas fa-user me-1"></i>
-                                            u/{{ post.author }}
+                                            <i class="fas fa-newspaper me-1"></i>
+                                            {{ post.author }}
                                         </span>
                                         <span class="me-3">
                                             <i class="fas fa-clock me-1"></i>
                                             {{ post.created_time }}
                                         </span>
                                     </div>
-                                    <div class="post-stats small">
-                                        <span class="badge bg-success me-2">
-                                            <i class="fas fa-arrow-up me-1"></i>
-                                            {{ post.score }} points
-                                        </span>
-                                        <span class="badge bg-info">
-                                            <i class="fas fa-comments me-1"></i>
-                                            {{ post.num_comments }} comments
-                                        </span>
+                                    {% if post.description %}
+                                    <div class="post-description small text-muted mb-2">
+                                        {{ post.description[:150] }}{% if post.description|length > 150 %}...{% endif %}
                                     </div>
+                                    {% endif %}
                                 </div>
                             {% endfor %}
                         {% else %}
                             <div class="text-center py-4">
                                 <i class="fas fa-exclamation-circle fa-3x text-muted mb-3"></i>
                                 <h5 class="text-muted">No Gaming Posts Available</h5>
-                                <p class="text-muted">API connection will be configured soon.</p>
+                                <p class="text-muted">Unable to fetch gaming news at this time.</p>
                             </div>
                         {% endif %}
                     </div>
@@ -141,31 +136,26 @@
                                     </h5>
                                     <div class="post-meta small text-muted mb-2">
                                         <span class="me-3">
-                                            <i class="fas fa-user me-1"></i>
-                                            u/{{ post.author }}
+                                            <i class="fas fa-newspaper me-1"></i>
+                                            {{ post.author }}
                                         </span>
                                         <span class="me-3">
                                             <i class="fas fa-clock me-1"></i>
                                             {{ post.created_time }}
                                         </span>
                                     </div>
-                                    <div class="post-stats small">
-                                        <span class="badge bg-success me-2">
-                                            <i class="fas fa-arrow-up me-1"></i>
-                                            {{ post.score }} points
-                                        </span>
-                                        <span class="badge bg-info">
-                                            <i class="fas fa-comments me-1"></i>
-                                            {{ post.num_comments }} comments
-                                        </span>
+                                    {% if post.description %}
+                                    <div class="post-description small text-muted mb-2">
+                                        {{ post.description[:150] }}{% if post.description|length > 150 %}...{% endif %}
                                     </div>
+                                    {% endif %}
                                 </div>
                             {% endfor %}
                         {% else %}
                             <div class="text-center py-4">
                                 <i class="fas fa-exclamation-circle fa-3x text-muted mb-3"></i>
                                 <h5 class="text-muted">No Technology Posts Available</h5>
-                                <p class="text-muted">API connection will be configured soon.</p>
+                                <p class="text-muted">Unable to fetch technology news at this time.</p>
                             </div>
                         {% endif %}
                     </div>
