@@ -10,6 +10,7 @@ This is a Flask-based web application called PixelCircuit that aggregates gaming
 - **News API Integration**: Successfully integrated News API for real content fetching
 - **API Key Configured**: Added News API key (e15e960b764a4f11ab348cf559ae11b9)
 - **Content Categories**: Gaming and technology news now fetching from authentic sources
+- **Firebase Analytics**: Integrated Firebase Analytics for user tracking and insights
 - **UI Updates**: Removed platform-specific references, updated branding throughout
 - **Real Data**: Website now displays actual gaming and technology news articles
 
@@ -49,17 +50,25 @@ Preferred communication style: Simple, everyday language.
 - **Configuration**: Timeout settings, headers, and base URL management
 - **Error Handling**: Graceful degradation on API failures
 
-### 2. Flask Application
+### 2. Firebase Analytics Integration
+- **Project ID**: pixelcircuit-7555a
+- **Measurement ID**: G-KPY35D2XV1
+- **Purpose**: Track user engagement, page views, and site performance
+- **Configuration**: Integrated via Firebase SDK v10.0.0
+- **Features**: Real-time analytics, user behavior tracking
+
+### 3. Flask Application
 - **Route Structure**: Single main route for the homepage
 - **Template Rendering**: Passes post data and metadata to templates
 - **Flash Messaging**: User feedback for errors and status updates
 - **Environment Configuration**: Development vs production settings
 
-### 3. Template System
+### 4. Template System
 - **Base Template**: HTML5 structure with Bootstrap integration
 - **Dynamic Content**: Post listings with metadata display
 - **Social Features**: Open Graph tags for social media sharing
 - **AdSense Ready**: Prepared spaces for monetization
+- **Analytics Integration**: Firebase Analytics embedded for tracking
 
 ## Data Flow
 
@@ -88,6 +97,7 @@ Each post will contain:
 ### Frontend Libraries
 - **Bootstrap 5**: UI framework with Replit dark theme
 - **Font Awesome 6**: Icon library
+- **Firebase Analytics**: User tracking and analytics (v10.0.0)
 - **CDN Delivery**: All frontend assets loaded from CDNs
 
 ### News API
