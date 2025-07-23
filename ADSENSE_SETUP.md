@@ -24,12 +24,15 @@ Currently your site shows demo ads with gradients. To show real ads:
 
 **Replace with:**
 ```html
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=YOUR-REAL-PUBLISHER-ID"></script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7350438200387137"
+     crossorigin="anonymous"></script>
+<!-- PixelCircuit -->
 <ins class="adsbygoogle"
      style="display:block"
-     data-ad-client="YOUR-REAL-PUBLISHER-ID"
-     data-ad-slot="YOUR-AD-SLOT-ID"
-     data-ad-format="auto"></ins>
+     data-ad-client="ca-pub-7350438200387137"
+     data-ad-slot="3986949028"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
 <script>
      (adsbygoogle = window.adsbygoogle || []).push({});
 </script>
