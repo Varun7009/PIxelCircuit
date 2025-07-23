@@ -199,6 +199,7 @@ def article():
     url = request.args.get('url')
     title = request.args.get('title', 'Article')
     source = request.args.get('source', 'Unknown Source')
+    image_url = request.args.get('image', '')
     
     if not url:
         flash('Article URL not provided.', 'danger')
@@ -208,17 +209,45 @@ def article():
         # Scrape full content
         full_content = content_fetcher.scrape_article_content(url)
         
+        # Use provided image or generate a relevant fallback based on content type
+        featured_image = image_url if image_url else get_fallback_image(title, source)
+        
         return render_template('article.html', 
                              title=title,
                              source=source,
                              url=url,
                              content=full_content,
+                             featured_image=featured_image,
                              last_updated=datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
     
     except Exception as e:
         app.logger.error(f"Error displaying article {url}: {str(e)}")
         flash('Unable to load article content.', 'danger')
         return redirect('/')
+
+def get_fallback_image(title, source):
+    """
+    Generate appropriate fallback image based on article content
+    """
+    title_lower = title.lower()
+    source_lower = source.lower()
+    
+    # Gaming related keywords
+    gaming_keywords = ['gaming', 'game', 'steam', 'playstation', 'xbox', 'nintendo', 'esports', 'dune', 'fps', 'rpg']
+    # Technology related keywords  
+    tech_keywords = ['tech', 'ai', 'software', 'programming', 'samsung', 'monitor', 'cpu', 'gpu', 'smartphone', 'laptop']
+    
+    # Check for gaming content
+    if any(keyword in title_lower for keyword in gaming_keywords):
+        return "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=600&q=80"
+    
+    # Check for technology content
+    elif any(keyword in title_lower for keyword in tech_keywords):
+        return "https://images.unsplash.com/photo-1518709268805-4e9042af2176?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=600&q=80"
+    
+    # Default tech image
+    else:
+        return "https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=600&q=80"
 
 @app.errorhandler(404)
 def not_found_error(error):

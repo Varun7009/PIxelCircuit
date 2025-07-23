@@ -6,14 +6,14 @@ This is a Flask-based web application called PixelCircuit that aggregates gaming
 
 ## Recent Changes (July 2025)
 
-- **Rebranding Complete**: Changed from "Reddit Aggregator" to "PixelCircuit"
-- **News API Integration**: Successfully integrated News API for real content fetching
-- **API Key Configured**: Added News API key (e15e960b764a4f11ab348cf559ae11b9)
-- **Content Categories**: Gaming and technology news now fetching from authentic sources
-- **Firebase Analytics**: Integrated Firebase Analytics for user tracking and insights
-- **Image Integration**: Added automatic blog images from News API with fallback placeholders
-- **UI Updates**: Removed platform-specific references, updated branding throughout
-- **Real Data**: Website now displays actual gaming and technology news articles with images
+- **Full Content Display**: Articles now show complete scraped content on-site instead of external redirects
+- **Apple-Style Design**: Added smooth transitions, blur effects, and glass morphism throughout
+- **Featured Images**: Large hero images for each article with dynamic content-based selection
+- **Enhanced Ad Integration**: 3 strategically placed ad boxes per article (top, middle, bottom)
+- **Advanced Animations**: Fade-in effects, hover transitions, and pulse animations
+- **Content Scraping**: Integrated trafilatura for full article content extraction
+- **Responsive Layout**: Optimized for all device sizes with mobile-first design
+- **Premium UI Effects**: Backdrop filters, gradient overlays, and shimmer effects
 
 ## User Preferences
 
