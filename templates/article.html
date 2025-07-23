@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }} - PixelCircuit</title>
+    
+    <!-- Bootstrap CSS with Replit Dark Theme -->
+    <link href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="{{ title }} - Read full article on PixelCircuit">
+    <meta name="keywords" content="pixelcircuit, gaming, technology, news, {{ source }}">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph tags for social sharing -->
+    <meta property="og:title" content="{{ title }} - PixelCircuit">
+    <meta property="og:description" content="Read full article on PixelCircuit">
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="PixelCircuit">
+    
+    <!-- Additional meta tags for analytics -->
+    <meta name="application-name" content="PixelCircuit">
+    <meta name="theme-color" content="#0d6efd">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-microchip me-2"></i>
+                PixelCircuit
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="/">
+                    <i class="fas fa-home me-1"></i>
+                    Back to Home
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ 'danger' if category == 'error' else category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <!-- Article Content -->
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <article class="bg-dark p-4 rounded">
+                    <!-- Article Header -->
+                    <header class="mb-4">
+                        <h1 class="display-6 mb-3">{{ title }}</h1>
+                        <div class="article-meta text-muted mb-3">
+                            <span class="me-3">
+                                <i class="fas fa-newspaper me-1"></i>
+                                <strong>{{ source }}</strong>
+                            </span>
+                            <span class="me-3">
+                                <i class="fas fa-clock me-1"></i>
+                                {{ last_updated }}
+                            </span>
+                            <span>
+                                <a href="{{ url }}" target="_blank" rel="noopener noreferrer" class="text-decoration-none">
+                                    <i class="fas fa-external-link-alt me-1"></i>
+                                    Original Source
+                                </a>
+                            </span>
+                        </div>
+                        <hr class="mb-4">
+                    </header>
+
+                    <!-- Article Body -->
+                    <div class="article-content">
+                        {% if content and content != "Content not available" %}
+                            <div class="content-text">
+                                {{ content|replace('\n', '<br>')|safe }}
+                            </div>
+                        {% else %}
+                            <div class="text-center py-5">
+                                <i class="fas fa-exclamation-triangle fa-3x text-muted mb-3"></i>
+                                <h4 class="text-muted">Content Not Available</h4>
+                                <p class="text-muted">Unable to extract full content from this article.</p>
+                                <a href="{{ url }}" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+                                    <i class="fas fa-external-link-alt me-1"></i>
+                                    Read on Original Site
+                                </a>
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Article Footer -->
+                    <footer class="mt-5 pt-4 border-top">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <small class="text-muted">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    Content sourced from {{ source }}
+                                </small>
+                            </div>
+                            <div class="col-md-6 text-end">
+                                <a href="/" class="btn btn-outline-primary btn-sm">
+                                    <i class="fas fa-arrow-left me-1"></i>
+                                    Back to PixelCircuit
+                                </a>
+                            </div>
+                        </div>
+                    </footer>
+                </article>
+            </div>
+        </div>
+
+        <!-- AdSense Ready - Article Ad Space -->
+        <div class="row mt-4">
+            <div class="col-lg-8 mx-auto">
+                <div class="ad-space-article">
+                    <div class="text-center p-3 bg-secondary rounded">
+                        <small class="text-muted">
+                            <i class="fas fa-ad me-1"></i>
+                            Advertisement Space - Article
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-center py-3 mt-5">
+        <div class="container">
+            <p class="text-muted mb-0">
+                <i class="fas fa-microchip me-1"></i>
+                PixelCircuit - Gaming & Technology Hub - Powered by Flask
+            </p>
+            <small class="text-muted">
+                Content aggregation platform
+            </small>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Firebase Analytics -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-analytics.js";
+        
+        const firebaseConfig = {
+            apiKey: "AIzaSyBhLE_AqwV86zYPIXxG7-D38lnEnYGd1QU",
+            authDomain: "pixelcircuit-7555a.firebaseapp.com",
+            projectId: "pixelcircuit-7555a",
+            storageBucket: "pixelcircuit-7555a.firebasestorage.app",
+            messagingSenderId: "122852511482",
+            appId: "1:122852511482:web:954da66651cad527eb8343",
+            measurementId: "G-KPY35D2XV1"
+        };
+        
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        
+        console.log('PixelCircuit Firebase Analytics initialized for article');
+    </script>
+</body>
+</html>

@@ -142,6 +142,32 @@ html {
     }
 }
 
+/* Article page styles */
+.article-content {
+    line-height: 1.8;
+    font-size: 1.1rem;
+}
+
+.article-content p {
+    margin-bottom: 1.5rem;
+}
+
+.article-meta {
+    border-left: 4px solid var(--bs-primary);
+    padding-left: 1rem;
+}
+
+.content-text {
+    text-align: justify;
+}
+
+.ad-space-article {
+    min-height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 /* Custom scrollbar for webkit browsers */
 ::-webkit-scrollbar {
     width: 8px;

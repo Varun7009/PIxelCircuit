@@ -1,7 +1,8 @@
 import os
 import logging
 import requests
-from flask import Flask, render_template, flash
+import trafilatura
+from flask import Flask, render_template, flash, request, redirect
 from datetime import datetime
 
 # Configure logging for debugging
@@ -82,7 +83,9 @@ class ContentFetcher:
                     'external_url': article.get('url', ''),
                     'is_self': False,
                     'description': article.get('description', ''),
-                    'image_url': article.get('urlToImage', '')
+                    'image_url': article.get('urlToImage', ''),
+                    'content': article.get('content', ''),  # Store content for scraping
+                    'full_content': ''  # Will be populated by scraping
                 }
                 
                 # Format creation time from publishedAt
@@ -111,6 +114,37 @@ class ContentFetcher:
         except Exception as e:
             app.logger.error(f"Unexpected error fetching {category} posts: {str(e)}")
             return []
+    
+    def scrape_article_content(self, url):
+        """
+        Scrape full article content from URL using trafilatura
+        
+        Args:
+            url (str): Article URL to scrape
+            
+        Returns:
+            str: Full article content or empty string if failed
+        """
+        try:
+            app.logger.info(f"Scraping content from: {url}")
+            downloaded = trafilatura.fetch_url(url)
+            
+            if not downloaded:
+                app.logger.warning(f"Failed to download content from: {url}")
+                return "Content not available"
+                
+            text = trafilatura.extract(downloaded, include_links=True, include_images=False)
+            
+            if text:
+                app.logger.info(f"Successfully scraped {len(text)} characters from: {url}")
+                return text
+            else:
+                app.logger.warning(f"No text extracted from: {url}")
+                return "Content not available"
+                
+        except Exception as e:
+            app.logger.error(f"Error scraping content from {url}: {str(e)}")
+            return "Content not available"
 
 # Initialize content fetcher
 content_fetcher = ContentFetcher()
@@ -156,6 +190,35 @@ def index():
                              technology_posts=[], 
                              total_posts=0,
                              last_updated=datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+
+@app.route('/article')
+def article():
+    """
+    Route to display full article content
+    """
+    url = request.args.get('url')
+    title = request.args.get('title', 'Article')
+    source = request.args.get('source', 'Unknown Source')
+    
+    if not url:
+        flash('Article URL not provided.', 'danger')
+        return redirect('/')
+    
+    try:
+        # Scrape full content
+        full_content = content_fetcher.scrape_article_content(url)
+        
+        return render_template('article.html', 
+                             title=title,
+                             source=source,
+                             url=url,
+                             content=full_content,
+                             last_updated=datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+    
+    except Exception as e:
+        app.logger.error(f"Error displaying article {url}: {str(e)}")
+        flash('Unable to load article content.', 'danger')
+        return redirect('/')
 
 @app.errorhandler(404)
 def not_found_error(error):
